@@ -1,0 +1,7 @@
+{
+  "name": "Shito",
+  "main": "shito.ShitoLoader",
+  "version": "0.0.1",
+  "autoRegister": true,
+  "depend": ["REST"]
+}
