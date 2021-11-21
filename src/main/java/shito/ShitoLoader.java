@@ -23,10 +23,10 @@ public class ShitoLoader extends Plugin {
     @Override
     public void onEnable() {
         getDataFolder().mkdirs();
-        shito = new Shito(getDataFolder().toPath());
     }
     @Subscribe
     public void onServerStarted(ServerStartedEvent event){
+        shito = new Shito(getDataFolder().toPath());
         handler = new PushHandler(shito.getTemplateManager());
         Vertx vertx = ServiceProvider.get(Vertx.class);
         var mainRouter = ServiceProvider.get(Router.class);
@@ -93,6 +93,13 @@ public class ShitoLoader extends Plugin {
                                         .then(
                                                 Node.argument("templateId", Node.string())
                                                         .executes(handler::handleDisable)
+                                        )
+                        )
+                        .then(
+                                Node.literal("remove")
+                                        .then(
+                                                Node.argument("templateId",Node.string())
+                                                        .executes(handler::handleRemove)
                                         )
                         )
         );

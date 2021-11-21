@@ -137,9 +137,9 @@ public class CommandHandler {
         Contact contact = src.getSender().asContact();
         contact.sendMessage("Now, type your template context.");
         shito.addSession(new SessionEdit(src.getSender(), templateContext -> {
-            if (shito.getTemplateManager().hasTemplate(tid)) { // already claimed, drop
+            if (!shito.getTemplateManager().hasTemplate(tid)) { // already claimed, drop
                 // contact.sendMessage("Previous failed session was detected and skipped.");
-                log.warn("Previous failed session was detected and skipped for contact " + contact.getUsername());
+                log.warn("EDITING: Previous failed session was detected and skipped for contact " + contact.getUsername());
                 return;
             }
             template.setContext(templateContext);
@@ -209,7 +209,23 @@ public class CommandHandler {
         src.reply(tid + " now disabled.");
         return 0;
     }
-
+    public int handleRemove(CommandContext<Source> source){
+        String tid = source.getArgument("templateId", String.class);
+        if (!shito.getTemplateManager().hasTemplate(tid)) {
+            source.getSource().reply("Template not found.");
+            return 0;
+        }
+        Source src = source.getSource();
+        ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
+        // check permissions
+        if (!template.isAuthorized(src.getSender())) {
+            src.reply(tid + ": Not authorized.");
+            return 0;
+        }
+        shito.getTemplateManager().removeTemplate(template);
+        src.reply("Removed.");
+        return 0;
+    }
     private static final String[] HELP_MESSAGE = new String[]{
             "Usage:",
             "You have to add me as a contact first.",
@@ -221,7 +237,8 @@ public class CommandHandler {
             "!p shito edit <templateId> -- edit template",
             "!p shito delroute <templateId> <routeId> -- remove route",
             "!p shito enable <templateId> -- enable",
-            "!p shito disable <templateId> -- disable"
+            "!p shito disable <templateId> -- disable",
+            "!p shito remove <templateId> -- delete"
     };
     private static final String HELP_MSG = Stream.of(HELP_MESSAGE).collect(Collectors.joining("\n"));
 
