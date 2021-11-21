@@ -2,6 +2,7 @@ package shito.api.data;
 
 import cc.sfclub.user.User;
 import com.mitchellbosecke.pebble.PebbleEngine;
+import com.mitchellbosecke.pebble.error.ParserException;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +47,10 @@ public class ShitoTemplate {
             PebbleTemplate compiledTemplate = TEMPLATE_ENGINE.getLiteralTemplate(context); //todo cache
             compiledTemplate.evaluate(wr, data);
             return wr.toString();
-        }catch(Throwable exception){
+        }catch(ParserException excepted){
+            return excepted.getLocalizedMessage();
+        } catch(Throwable exception){
+            exception.printStackTrace();
             return exception.getLocalizedMessage();
         }
     }

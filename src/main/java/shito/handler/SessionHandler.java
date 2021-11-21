@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SessionHandler {
     private final List<ChatSession> sessions; // reference from outer world.
-    @Subscribe(sticky = true,threadMode = ThreadMode.ASYNC)
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void onMessage(MessageEvent event){
         sessions.removeIf(e->e.test(event));
     }

@@ -239,7 +239,7 @@ public class CommandHandler {
             "Commands:",
             "!p shito -- full help",
             "!p shito route <templateId> -- add a new push destination for here",
-            "!p shito create <templateId> -- create a new template",
+            "!p shito create <templateId> [presetId] -- create a new template",
             "!p shito status [templateId] -- list of",
             "!p shito edit <templateId> -- edit template",
             "!p shito delroute <templateId> <routeId> -- remove route",
@@ -247,7 +247,7 @@ public class CommandHandler {
             "!p shito disable <templateId> -- disable",
             "!p shito remove <templateId> -- delete",
             "!p shito all -- list all templates",
-            "!p shito preset create <presetId> -- create preset",
+            "!p shito preset create <presetId> <author> <description> -- create preset",
             "!p shito preset remove <presetId> -- remove preset",
             "!p shito preset -- list of available presets and descriptions"
     };
@@ -276,6 +276,8 @@ public class CommandHandler {
     public int handlePresetAdd(CommandContext<Source> source){
         Source src = source.getSource();
         String id = source.getArgument("id",String.class);
+        String author = source.getArgument("author",String.class);
+        String desc = source.getArgument("description",String.class);
         if(shito.getPresetManager().hasPreset(id)){
             src.reply(id+" is already added");
             return 0;
@@ -287,20 +289,15 @@ public class CommandHandler {
         src.reply("Check your private message.");
         var contact = src.getSender().asContact();
         contact.sendMessage("Type your preset content.");
+
         shito.addSession(new SessionCreate(src.getSender(),content -> {
-            contact.sendMessage("Type your description");
-            shito.addSession(new SessionAskDescription(src.getSender(),description -> {
-                contact.sendMessage("Who is the author?");
-                shito.addSession(new SessionAskDescription(src.getSender(),author->{
-                    if(shito.getPresetManager().hasPreset(id)){
-                        contact.sendMessage("This id was claimed when you're providing descriptions.");
-                        return;
-                    }
-                    ShitoPreset shitoPreset = new ShitoPreset(id,content,description,author);
-                    shito.getPresetManager().savePreset(shitoPreset);
-                    contact.sendMessage("Saved successfully!");
-                }));
-            }));
+            if(shito.getPresetManager().hasPreset(id)){
+                contact.sendMessage("This id was claimed when you're providing descriptions.");
+                return;
+            }
+            ShitoPreset shitoPreset = new ShitoPreset(id,content,desc,author);
+            shito.getPresetManager().savePreset(shitoPreset);
+            contact.sendMessage("Saved successfully!");
         }));
         return 0;
     }
