@@ -28,6 +28,11 @@ public class ShitoTemplate {
     private final String token;
     private final List<ShitoRoute> messageRouting = new ArrayList<>();
 
+    // for stream collecting
+    public String asUUIDString(){
+        return user.toString();
+    }
+
     public boolean validate(String sign){
         return enabled && token.equals(sign); // todo v2
     }
