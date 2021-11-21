@@ -14,15 +14,31 @@ public class RenderTest {
             .build();
     @Test
     public void onTest(){
-        var t = TEMPLATE_ENGINE.getLiteralTemplate("A new repository has been added.\n" +
-                "Name: {{ repository.full_name }}\n" +
-                "Url: {{ repository.html_url }} \n" +
-                "Language: {{ repository.language }}");
-        var excepted = "A new repository has been added.\n" +
-                "Name: iceBear67/ShitoUrl: https://github.com/iceBear67/Shito \n" +
-                "Language: Java";
+
+        var t = TEMPLATE_ENGINE.getLiteralTemplate("[{{ repository.full_name }}]\n" +
+                "{% for commit in commits %}\n" +
+                "{{ commit.committer.username }} HKT {{ commit.timestamp | date(existingFormat=\"yyyy-MM-dd'T'HH:mm:ssX\", format = \"HH:mm:ss\") }} \n" +
+                "#{{ commit.id | slice(0,7) }}({{ ref | split(\"\\/\") | last }}):\n" +
+                "{{commit.message | replace( {\"\n" +
+                "\": \"\n" +
+                "- \"} ) }}\n" +
+                "{% endfor %}")
+
+             /*   "{% for commit in commits %}\n" +
+                "{{ commit.committer.username }} HKT {{ commit.timestamp | date(existingFormat=\"yyyy-MM-dd'T'HH:mm:ssX\", format = \"HH:mm:ss\") }}\n" +
+                "#{{ commit.id | slice(0,7) }}({{ ref | spilt(\"/\") | last }}):\n" +
+                "{{commit.message | spilt(\"\\n\") | join(\"\\n - )}}\n" +
+                "{% endfor %}");
+
+              */;
+        var excepted = "[iceBear67/Shito]\n" +
+                "iceBear67 HKT 10:09:34 \n" +
+                "#2ca42ab(master):\n" +
+                "Add listAll\n" +
+                "- test";
         try(var sw = new StringWriter()){
             t.evaluate(sw,new DelegatingMap(new JsonPathMap(JsonPath.parse(RenderTest.class.getClassLoader().getResourceAsStream("test.json"))),new HashMap<>()));
+            //System.out.println(sw);
             Assertions.assertEquals(excepted,sw.toString());
         } catch (IOException e) {
             e.printStackTrace();

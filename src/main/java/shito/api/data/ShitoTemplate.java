@@ -42,11 +42,11 @@ public class ShitoTemplate {
         return user.getUniqueID().equals(this.user.toString());
     }
     public String render(Map<String,Object> data){
-        PebbleTemplate compiledTemplate = TEMPLATE_ENGINE.getLiteralTemplate(context);
         try (StringWriter wr = new StringWriter()) {
+            PebbleTemplate compiledTemplate = TEMPLATE_ENGINE.getLiteralTemplate(context); //todo cache
             compiledTemplate.evaluate(wr, data);
             return wr.toString();
-        }catch(IOException exception){
+        }catch(Throwable exception){
             return exception.getLocalizedMessage();
         }
     }
