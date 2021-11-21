@@ -10,6 +10,7 @@ import shito.session.ChatSession;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Shito {
     private final Path dataDir;
@@ -17,8 +18,7 @@ public class Shito {
     private ITemplateManager templateManager;
     @Getter
     private IPresetManager presetManager;
-    List<ChatSession> sessions = new ArrayList<>();
-
+    List<ChatSession> sessions = new CopyOnWriteArrayList<>();
     public Shito(Path dataDir) {
         this.dataDir = dataDir;
         templateManager = new FileTemplateManager(dataDir);

@@ -1,10 +1,13 @@
 package shito.handler;
 
 import cc.sfclub.events.Event;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.jayway.jsonpath.JsonPath;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.RoutingContext;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import shito.api.ITemplateManager;
 import shito.api.data.ShitoMessage;
 import shito.util.JsonPathMap;
@@ -15,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
+@Slf4j
 public class PushHandler{
     private final ITemplateManager manager;
     // /shito/:id
@@ -28,7 +32,8 @@ public class PushHandler{
             event.response().end();
             return;
         }
-        event.response().setStatusCode(handle(id,body,token));
+        var c = event.request().getHeader("Content-Type");
+        event.response().setStatusCode(handle(id,body,token,c != null && c.contains("application/json")));
         event.response().end();
     }
     // /shito/:id/:base64_message
@@ -41,11 +46,13 @@ public class PushHandler{
             event.response().end();
             return;
         }
-        event.response().setStatusCode(handle(id, new String(Base64.getUrlDecoder().decode(data)),token));
+        var s= new String(Base64.getUrlDecoder().decode(data));
+        var c = event.request().getHeader("Content-Type");
+        event.response().setStatusCode(handle(id, s,token, c != null && c.contains("application/json")));
         event.response().end();
     }
 
-    private int handle(String templateId, String data,String token){
+    private int handle(String templateId, String data,String token,boolean json){
         //System.out.println(data);
         var template = manager.getTemplate(templateId);
         if(template == null){
@@ -57,9 +64,9 @@ public class PushHandler{
         }
         // try parse.
         Map<String,Object> context;
-        try{
+        if(json){
           context = new JsonPathMap(JsonPath.parse(data));
-        }catch(Throwable excepted){
+        }else{
             context = new HashMap<>();
             context.put("data",data);
         }

@@ -17,25 +17,28 @@ import shito.handler.SessionHandler;
 public class ShitoLoader extends Plugin {
     private Shito shito;
     private PushHandler handler;
-    public static Shito getShito(){
+
+    public static Shito getShito() {
         return ShitoLoader.get(ShitoLoader.class).shito;
     }
+
     @Override
     public void onEnable() {
         getDataFolder().mkdirs();
     }
+
     @Subscribe
-    public void onServerStarted(ServerStartedEvent event){
+    public void onServerStarted(ServerStartedEvent event) {
         shito = new Shito(getDataFolder().toPath());
         handler = new PushHandler(shito.getTemplateManager());
         Vertx vertx = ServiceProvider.get(Vertx.class);
         var mainRouter = ServiceProvider.get(Router.class);
         mainRouter.route().handler(BodyHandler.create(false));
         mainRouter.post("/shito/api/v1/push/:templateId/:token").handler(handler::handlePost);
-        mainRouter.route("/shito/api/v1/push/:templateId/:token/:data").handler(handler::handleOther);
+        mainRouter.get("/shito/api/v1/pushGet/:templateId/:token/:data").handler(handler::handleOther);
 
         // register events
-        Event.registerListeners(new MessageBroadcaster(),new SessionHandler(shito.sessions)); // inject reference
+        Event.registerListeners(new MessageBroadcaster(), new SessionHandler(shito.sessions)); // inject reference
 
         var handler = new CommandHandler(shito);
         registerCommand(
@@ -44,17 +47,17 @@ public class ShitoLoader extends Plugin {
                         .then(
                                 Node.literal("route")
                                         .then(
-                                                Node.argument("templateId",Node.string())
+                                                Node.argument("templateId", Node.string())
                                                         .executes(handler::handleRoute)
                                         )
                         )
                         .then(
                                 Node.literal("create")
                                         .then(
-                                                Node.argument("templateId",Node.string())
+                                                Node.argument("templateId", Node.string())
                                                         .executes(handler::handleCreate)
                                                         .then(
-                                                                Node.argument("presetId",Node.string())
+                                                                Node.argument("presetId", Node.string())
                                                                         .executes(handler::handleCreateByPreset)
                                                         )
                                         )
@@ -62,7 +65,7 @@ public class ShitoLoader extends Plugin {
                         .then(
                                 Node.literal("status")
                                         .then(
-                                                Node.argument("templateId",Node.string())
+                                                Node.argument("templateId", Node.string())
                                                         .executes(handler::handleTemplateStatus)
                                         )
                                         .executes(handler::handleUserStatus)
@@ -77,9 +80,9 @@ public class ShitoLoader extends Plugin {
                         .then(
                                 Node.literal("delroute")
                                         .then(
-                                                Node.argument("templateId",Node.string())
+                                                Node.argument("templateId", Node.string())
                                                         .then(
-                                                                Node.argument("id",Node.integerArg())
+                                                                Node.argument("id", Node.integerArg())
                                                                         .executes(handler::handleDelRoute)
                                                         )
                                         )
@@ -102,31 +105,38 @@ public class ShitoLoader extends Plugin {
                         .then(
                                 Node.literal("remove")
                                         .then(
-                                                Node.argument("templateId",Node.string())
+                                                Node.argument("templateId", Node.string())
                                                         .executes(handler::handleRemove)
                                         )
                         )
                         .then(
                                 Node.literal("all")
-                                        .requires( user -> user.getSender().hasPermission("shito.listall"))
+                                        .requires(user -> user.getSender().hasPermission("shito.listall"))
                                         .executes(handler::handleListTemplates)
                         )
                         .then(
                                 Node.literal("preset")
                                         .then(
                                                 Node.literal("create")
-                                                        .requires(s->s.getSender().hasPermission("shito.preset.create"))
+                                                        .requires(s -> s.getSender().hasPermission("shito.preset.create"))
                                                         .then(
-                                                                Node.argument("id",Node.string())
-                                                                        .executes(handler::handlePresetAdd)
+                                                                Node.argument("id", Node.string())
+                                                                        .then(
+                                                                                Node.argument("author", Node.string())
+                                                                                        .then(
+                                                                                                Node.argument("description", Node.string())
+                                                                                                        .executes(handler::handlePresetAdd)
+                                                                                        )
+                                                                        )
+
                                                         )
 
                                         )
                                         .then(
                                                 Node.literal("remove")
-                                                        .requires(s->s.getSender().hasPermission("shito.preset.remove"))
+                                                        .requires(s -> s.getSender().hasPermission("shito.preset.remove"))
                                                         .then(
-                                                                Node.argument("id",Node.string())
+                                                                Node.argument("id", Node.string())
                                                                         .executes(handler::handlePresetDel)
                                                         )
                                         )
@@ -140,5 +150,6 @@ public class ShitoLoader extends Plugin {
     @Override
     public void onDisable() {
         shito.getTemplateManager().saveAllTemplate();
+        shito.getPresetManager().savePresets();
     }
 }
