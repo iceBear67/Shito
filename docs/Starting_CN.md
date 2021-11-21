@@ -86,7 +86,8 @@ Shito 允许用户将信息传播的更广。
 # v1 API
 
 Shito 开放的简易 Web API。  
-目前支持两种上报方式：`HTTP 1.1 POST`，`HTTP 1.1 GET`
+目前支持两种上报方式：`HTTP 1.1 POST`，`HTTP 1.1 GET`  
+每 60 秒至多发送 20 条。
 
 ## Post API
 
@@ -96,7 +97,7 @@ Shito 开放的简易 Web API。
 往示例 URL Post 数据即可。若要使 Shito 启用 jsonpath 支持，需要满足两个条件：
 
 1. `Content-Type: application/json`
-2. 数据必须是 Json
+2. 数据必须是 Json，长度最长 15000
 
 以上任意一点不满足 Shito 均会将数据作为 `data` 处理（即模板编译环境中只会存在一个 `data` 字段），Shito 会在出现错误的时候直接将错误信息汇报到发送点里。
 
@@ -105,7 +106,7 @@ Shito 开放的简易 Web API。
 示例 url: `https://bot.sfclub.cc/shito/api/v1/pushGet/testPost/2c8246a8-ac7b-4c6d-80ce-e59e5cc07750/%DATA%`  
 注意：这个 URL 倒数第二个是用户的 secret，请保护好不要泄露。
 
-对于数据如何启用 jsonpath 支持，请看上一条。
+对于数据如何启用 jsonpath 支持，请看上一条，长度最长 200。
 
 数据通过 URL 发送到服务端，但是数据需要满足一个要求: `必须经过URLSafe的Base64编码`    
 在 Java 中也很容易实现：
