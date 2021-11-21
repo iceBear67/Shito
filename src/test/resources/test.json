@@ -1,31 +1,7 @@
 {
-  "zen": "Speak like a human.",
-  "hook_id": 329411746,
-  "hook": {
-    "type": "Repository",
-    "id": 329411746,
-    "name": "web",
-    "active": true,
-    "events": [
-      "*"
-    ],
-    "config": {
-      "content_type": "json",
-      "insecure_ssl": "0",
-      "url": "https://bot.sfclub.cc/aaa"
-    },
-    "updated_at": "2021-11-20T15:56:44Z",
-    "created_at": "2021-11-20T15:56:44Z",
-    "url": "https://api.github.com/repos/iceBear67/Shito/hooks/329411746",
-    "test_url": "https://api.github.com/repos/iceBear67/Shito/hooks/329411746/test",
-    "ping_url": "https://api.github.com/repos/iceBear67/Shito/hooks/329411746/pings",
-    "deliveries_url": "https://api.github.com/repos/iceBear67/Shito/hooks/329411746/deliveries",
-    "last_response": {
-      "code": null,
-      "status": "unused",
-      "message": null
-    }
-  },
+  "ref": "refs/heads/master",
+  "before": "b763a10196e94cba8c0680f5cb5ac732e96f4871",
+  "after": "2ca42ab778865aa94f175759388274ff68ee781a",
   "repository": {
     "id": 430145415,
     "node_id": "R_kgDOGaN_hw",
@@ -33,6 +9,8 @@
     "full_name": "iceBear67/Shito",
     "private": false,
     "owner": {
+      "name": "iceBear67",
+      "email": "48877375+iceBear67@users.noreply.github.com",
       "login": "iceBear67",
       "id": 48877375,
       "node_id": "MDQ6VXNlcjQ4ODc3Mzc1",
@@ -55,7 +33,7 @@
     "html_url": "https://github.com/iceBear67/Shito",
     "description": "Universal notification broadcaster.",
     "fork": false,
-    "url": "https://api.github.com/repos/iceBear67/Shito",
+    "url": "https://github.com/iceBear67/Shito",
     "forks_url": "https://api.github.com/repos/iceBear67/Shito/forks",
     "keys_url": "https://api.github.com/repos/iceBear67/Shito/keys{/key_id}",
     "collaborators_url": "https://api.github.com/repos/iceBear67/Shito/collaborators{/collaborator}",
@@ -92,15 +70,15 @@
     "labels_url": "https://api.github.com/repos/iceBear67/Shito/labels{/name}",
     "releases_url": "https://api.github.com/repos/iceBear67/Shito/releases{/id}",
     "deployments_url": "https://api.github.com/repos/iceBear67/Shito/deployments",
-    "created_at": "2021-11-20T15:55:59Z",
-    "updated_at": "2021-11-20T15:56:23Z",
-    "pushed_at": "2021-11-20T15:56:05Z",
+    "created_at": 1637423759,
+    "updated_at": "2021-11-21T02:00:38Z",
+    "pushed_at": 1637460581,
     "git_url": "git://github.com/iceBear67/Shito.git",
     "ssh_url": "git@github.com:iceBear67/Shito.git",
     "clone_url": "https://github.com/iceBear67/Shito.git",
     "svn_url": "https://github.com/iceBear67/Shito",
     "homepage": null,
-    "size": 0,
+    "size": 73,
     "stargazers_count": 1,
     "watchers_count": 1,
     "language": "Java",
@@ -124,7 +102,13 @@
     "forks": 0,
     "open_issues": 0,
     "watchers": 1,
-    "default_branch": "master"
+    "default_branch": "master",
+    "stargazers": 1,
+    "master_branch": "master"
+  },
+  "pusher": {
+    "name": "iceBear67",
+    "email": "48877375+iceBear67@users.noreply.github.com"
   },
   "sender": {
     "login": "iceBear67",
@@ -145,5 +129,72 @@
     "received_events_url": "https://api.github.com/users/iceBear67/received_events",
     "type": "User",
     "site_admin": false
+  },
+  "created": false,
+  "deleted": false,
+  "forced": false,
+  "base_ref": null,
+  "compare": "https://github.com/iceBear67/Shito/compare/b763a10196e9...2ca42ab77886",
+  "commits": [
+    {
+      "id": "2ca42ab778865aa94f175759388274ff68ee781a",
+      "tree_id": "85138a3eda954315b6a47aa82d4ae5bf69b7c95e",
+      "distinct": true,
+      "message": "Add listAll\ntest",
+      "timestamp": "2021-11-21T10:09:34+08:00",
+      "url": "https://github.com/iceBear67/Shito/commit/2ca42ab778865aa94f175759388274ff68ee781a",
+      "author": {
+        "name": "iceBear67",
+        "email": "icebear67@sfclub.cc",
+        "username": "iceBear67"
+      },
+      "committer": {
+        "name": "iceBear67",
+        "email": "icebear67@sfclub.cc",
+        "username": "iceBear67"
+      },
+      "added": [
+
+      ],
+      "removed": [
+
+      ],
+      "modified": [
+        "src/main/java/shito/ShitoLoader.java",
+        "src/main/java/shito/api/ITemplateManager.java",
+        "src/main/java/shito/handler/CommandHandler.java",
+        "src/main/java/shito/manager/FileTemplateManager.java"
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "2ca42ab778865aa94f175759388274ff68ee781a",
+    "tree_id": "85138a3eda954315b6a47aa82d4ae5bf69b7c95e",
+    "distinct": true,
+    "message": "Add listAll",
+    "timestamp": "2021-11-21T10:09:34+08:00",
+    "url": "https://github.com/iceBear67/Shito/commit/2ca42ab778865aa94f175759388274ff68ee781a",
+    "author": {
+      "name": "iceBear67",
+      "email": "icebear67@sfclub.cc",
+      "username": "iceBear67"
+    },
+    "committer": {
+      "name": "iceBear67",
+      "email": "icebear67@sfclub.cc",
+      "username": "iceBear67"
+    },
+    "added": [
+
+    ],
+    "removed": [
+
+    ],
+    "modified": [
+      "src/main/java/shito/ShitoLoader.java",
+      "src/main/java/shito/api/ITemplateManager.java",
+      "src/main/java/shito/handler/CommandHandler.java",
+      "src/main/java/shito/manager/FileTemplateManager.java"
+    ]
   }
 }
