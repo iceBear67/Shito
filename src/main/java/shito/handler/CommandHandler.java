@@ -19,6 +19,7 @@ import shito.session.SessionEdit;
 
 import java.awt.*;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,9 +59,14 @@ public class CommandHandler {
         return 0;
     }
 
+    private static final Pattern VALID_TEMPLATE_ID = Pattern.compile("^[a-zA-Z0-9_]+$");
     public int handleCreate(CommandContext<Source> source) {
         Source src = source.getSource();
         String tid = source.getArgument("templateId", String.class);
+        if(!VALID_TEMPLATE_ID.matcher(tid).matches()){
+            src.reply("Illegal template id. Please use `^[a-zA-Z0-9_]+$`");
+            return 0;
+        }
         if (shito.getTemplateManager().hasTemplate(tid)) {
             src.reply("This name is already claimed.");
             return 0;

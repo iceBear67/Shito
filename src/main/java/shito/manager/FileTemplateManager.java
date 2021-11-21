@@ -58,9 +58,6 @@ public class FileTemplateManager implements ITemplateManager {
         if (cachedTemplates.containsKey(id)) {
             return cachedTemplates.get(id);
         }
-        if (id.equals("index")) {
-            return null;
-        }
         var data = dataDir.resolve("template." + id + ".json").toFile();
         if (!data.exists()) {
             return null;
