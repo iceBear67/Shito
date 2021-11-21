@@ -16,7 +16,7 @@ public class SessionCreate implements ChatSession{
         if(!(event instanceof PrivateMessage)){
             return false;
         }
-        if(!(((PrivateMessage) event).getSender() == user)){
+        if(!(((PrivateMessage) event).getSender().uniqueID.equals(user.getUniqueID()))){
             return false;
         }
         dataConsumer.accept(event.getMessage());

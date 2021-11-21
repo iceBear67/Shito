@@ -23,6 +23,8 @@ public class ShitoMessage extends Event {
 
     public String render(Map<String,Object> addition){ // todo should we cache.
         var delegated = new DelegatingMap(context,addition);
+        //var delegated = context;
+       // System.out.println(context.get("repository.full_name"));
         return template.render(delegated);
     }
 }
