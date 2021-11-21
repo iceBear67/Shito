@@ -240,7 +240,8 @@ public class CommandHandler {
             "!p shito delroute <templateId> <routeId> -- remove route",
             "!p shito enable <templateId> -- enable",
             "!p shito disable <templateId> -- disable",
-            "!p shito remove <templateId> -- delete"
+            "!p shito remove <templateId> -- delete",
+            "!p shito all -- list all templates"
     };
     private static final String HELP_MSG = Stream.of(HELP_MESSAGE).collect(Collectors.joining("\n"));
 

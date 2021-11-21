@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.io.StringWriter;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +41,13 @@ public class ShitoTemplate {
     public boolean isAuthorized(User user){
         return user.getUniqueID().equals(this.user.toString());
     }
-    @SneakyThrows
     public String render(Map<String,Object> data){
         PebbleTemplate compiledTemplate = TEMPLATE_ENGINE.getLiteralTemplate(context);
         try (StringWriter wr = new StringWriter()) {
             compiledTemplate.evaluate(wr, data);
             return wr.toString();
+        }catch(IOException exception){
+            return exception.getLocalizedMessage();
         }
     }
 }
