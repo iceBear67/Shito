@@ -246,7 +246,10 @@ public class CommandHandler {
             "!p shito enable <templateId> -- enable",
             "!p shito disable <templateId> -- disable",
             "!p shito remove <templateId> -- delete",
-            "!p shito all -- list all templates"
+            "!p shito all -- list all templates",
+            "!p shito preset create <presetId> -- create preset",
+            "!p shito preset remove <presetId> -- remove preset",
+            "!p shito preset -- list of available presets and descriptions"
     };
     private static final String HELP_MSG = Stream.of(HELP_MESSAGE).collect(Collectors.joining("\n"));
 
