@@ -317,6 +317,7 @@ public class CommandHandler {
         sb.append("All presets:\n");
         for (ShitoPreset template : shito.getPresetManager().listPresets()) {
             sb.append(" - ").append(template.getId()).append(" ( by ").append(template.getAuthor()).append(")\n");
+            sb.append("  ").append(template.getDescription()).append("\n");
         }
         source.getSource().reply(sb.toString());
         return 0;
