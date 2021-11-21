@@ -101,7 +101,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.status") || !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -135,7 +135,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.edit") ||!template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -166,7 +166,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.delroute") ||!template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -190,7 +190,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.enable") ||!template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -208,7 +208,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.disable") ||!template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -225,7 +225,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.remove") ||!template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -234,19 +234,18 @@ public class CommandHandler {
         return 0;
     }
     private static final String[] HELP_MESSAGE = new String[]{
-            "Usage:",
-            "You have to add me as a contact first.",
+            "Usage: https://github.com/iceBear67/Shito",
             "Commands:",
-            "!p shito -- full help",
-            "!p shito route <templateId> -- add a new push destination for here",
-            "!p shito create <templateId> [presetId] -- create a new template",
-            "!p shito status [templateId] -- list of",
-            "!p shito edit <templateId> -- edit template",
-            "!p shito delroute <templateId> <routeId> -- remove route",
-            "!p shito enable <templateId> -- enable",
-            "!p shito disable <templateId> -- disable",
-            "!p shito remove <templateId> -- delete",
-            "!p shito all -- list all templates",
+            "!p shito -- This shortcut",
+            "!p shito route <templateId> -- Mark here as a routing destination for specified template",
+            "!p shito create <templateId> [presetId] -- Create a new template, presetId can be found from `!p shito preset`",
+            "!p shito status [templateId] -- List routing for template or list your templates",
+            "!p shito edit <templateId> -- Edit template",
+            "!p shito delroute <templateId> <routeId:int(index)> -- Remove route, index starts from 0",
+            "!p shito enable <templateId> -- Enable template",
+            "!p shito disable <templateId> -- Disable template",
+            "!p shito remove <templateId> -- Delete template",
+            "!p shito all -- List all templates",
             "!p shito preset create <presetId> <author> <description> -- create preset",
             "!p shito preset remove <presetId> -- remove preset",
             "!p shito preset -- list of available presets and descriptions"
