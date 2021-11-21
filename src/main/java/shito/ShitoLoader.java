@@ -53,6 +53,10 @@ public class ShitoLoader extends Plugin {
                                         .then(
                                                 Node.argument("templateId",Node.string())
                                                         .executes(handler::handleCreate)
+                                                        .then(
+                                                                Node.argument("presetId",Node.string())
+                                                                        .executes(handler::handleCreateByPreset)
+                                                        )
                                         )
                         )
                         .then(
@@ -106,6 +110,28 @@ public class ShitoLoader extends Plugin {
                                 Node.literal("all")
                                         .requires( user -> user.getSender().hasPermission("shito.listall"))
                                         .executes(handler::handleListTemplates)
+                        )
+                        .then(
+                                Node.literal("preset")
+                                        .then(
+                                                Node.literal("create")
+                                                        .requires(s->s.getSender().hasPermission("shito.preset.create"))
+                                                        .then(
+                                                                Node.argument("id",Node.string())
+                                                                        .executes(handler::handlePresetAdd)
+                                                        )
+
+                                        )
+                                        .then(
+                                                Node.literal("remove")
+                                                        .requires(s->s.getSender().hasPermission("shito.preset.remove"))
+                                                        .then(
+                                                                Node.argument("id",Node.string())
+                                                                        .executes(handler::handlePresetDel)
+                                                        )
+                                        )
+                                        .executes(handler::handlePresetList)
+
                         )
         );
 

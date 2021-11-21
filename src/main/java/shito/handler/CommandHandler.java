@@ -10,10 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shito.Shito;
 import shito.ShitoLoader;
+import shito.api.data.ShitoPreset;
 import shito.api.data.ShitoRoute;
 import shito.api.data.ShitoTemplate;
 import shito.routing.GroupShitoRouting;
 import shito.routing.PrivateShitoRouting;
+import shito.session.SessionAskDescription;
 import shito.session.SessionCreate;
 import shito.session.SessionEdit;
 
@@ -114,9 +116,6 @@ public class CommandHandler {
         return 0;
     }
 
-    /*
-        User status
-     */
     public int handleUserStatus(CommandContext<Source> source) {
         StringBuilder sb = new StringBuilder();
         sb.append("Your Templates: \n");
@@ -270,4 +269,80 @@ public class CommandHandler {
         source.getSource().reply(sb.toString());
         return 0;
     }
+
+    public int handlePresetAdd(CommandContext<Source> source){
+        Source src = source.getSource();
+        String id = source.getArgument("id",String.class);
+        if(shito.getPresetManager().hasPreset(id)){
+            src.reply(id+" is already added");
+            return 0;
+        }
+        if(!VALID_TEMPLATE_ID.matcher(id).matches()){
+            src.reply(id+" is not valid");
+            return 0;
+        }
+        src.reply("Check your private message.");
+        var contact = src.getSender().asContact();
+        contact.sendMessage("Type your preset content.");
+        shito.addSession(new SessionCreate(src.getSender(),content -> {
+            contact.sendMessage("Type your description");
+            shito.addSession(new SessionAskDescription(src.getSender(),description -> {
+                contact.sendMessage("Who is the author?");
+                shito.addSession(new SessionAskDescription(src.getSender(),author->{
+                    if(shito.getPresetManager().hasPreset(id)){
+                        contact.sendMessage("This id was claimed when you're providing descriptions.");
+                        return;
+                    }
+                    ShitoPreset shitoPreset = new ShitoPreset(id,content,description,author);
+                    shito.getPresetManager().savePreset(shitoPreset);
+                    contact.sendMessage("Saved successfully!");
+                }));
+            }));
+        }));
+        return 0;
+    }
+    public int handlePresetDel(CommandContext<Source> source){
+        Source src = source.getSource();
+        String id = source.getArgument("id",String.class);
+        if(!shito.getPresetManager().hasPreset(id)){
+            src.reply(id+" is not exist");
+            return 0;
+        }
+        src.reply("Deleted.");
+        shito.getPresetManager().removePreset(shito.getPresetManager().getPresetById(id));
+        return 0;
+    }
+    public int handlePresetList(CommandContext<Source> source){
+        StringBuilder sb = new StringBuilder();
+        sb.append("All presets:\n");
+        for (ShitoPreset template : shito.getPresetManager().listPresets()) {
+            sb.append(" - ").append(template.getId()).append(" ( by ").append(template.getAuthor()).append(")\n");
+        }
+        source.getSource().reply(sb.toString());
+        return 0;
+    }
+    // !p shito create <id> <preset>
+    public int handleCreateByPreset(CommandContext<Source> source){
+        Source src = source.getSource();
+        String templateId = source.getArgument("templateId",String.class);
+        String presetId = source.getArgument("presetId",String.class);
+        if(shito.getTemplateManager().hasTemplate(templateId)){
+            src.reply(templateId+" is already exist");
+            return 0;
+        }
+        if(!shito.getPresetManager().hasPreset(presetId)){
+            src.reply(presetId+" is not exist");
+            return 0;
+        }
+        String token = UUID.randomUUID().toString();
+        ShitoTemplate template = new ShitoTemplate(templateId, UUID.fromString(src.getSender().uniqueID), shito.getPresetManager().getPresetById(presetId).getContext(), true, token);
+        shito.getTemplateManager().saveTemplate(template);
+        src.reply("Success! Check your private message for further details.");
+        var contact = src.getSender().asContact();
+        contact.sendMessage("Saved! Your token is [" + token + "], it won't show again!");
+        contact.sendMessage("POST: https://bot.sfclub.cc/shito/api/v1/push/" + templateId + "/" + token);
+        contact.sendMessage("GET/OTHERS: https://bot.sfclub.cc/shito/api/v1/push/" + templateId + "/" + token + "/:data(urlsafe_base64 encoded)");
+        return 0;
+    }
+
 }
