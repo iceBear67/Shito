@@ -26,6 +26,11 @@ public class PrivateShitoRouting implements ShitoRoute {
     }
 
     @Override
+    public void init() {
+        contact=Core.get().bot(platId).orElseThrow().getContact(uid).orElseThrow();
+    }
+
+    @Override
     public String toString() {
         if(contact==null)return "Invalidated Contact";
         return "User "+contact.getNickname()+" ("+contact.getID()+")";

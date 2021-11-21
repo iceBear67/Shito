@@ -13,6 +13,7 @@ import java.util.function.Consumer;
  */
 public interface ShitoRoute {
     void broadcast(Consumer<? super Receiver> groupConsumer);
+    void init();
 
     class ShitoRouteSerializer implements JsonDeserializer<ShitoRoute>, JsonSerializer<ShitoRoute> {
         private static final Gson SELF_HOLD_GSON = new Gson();
@@ -26,7 +27,9 @@ public interface ShitoRoute {
             JsonObject obj = json.getAsJsonObject();
             String clazzName = obj.get("impl").getAsString();
             Class<? extends ShitoRoute> routeImpl = (Class<? extends ShitoRoute>) Class.forName(clazzName);
-            return SELF_HOLD_GSON.fromJson(obj.get("data"),routeImpl);
+            var data = SELF_HOLD_GSON.fromJson(obj.get("data"),routeImpl);
+            data.init();
+            return data;
         }
 
         @Override
