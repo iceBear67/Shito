@@ -24,6 +24,11 @@ public class GroupShitoRouting implements ShitoRoute {
     }
 
     @Override
+    public void init() {
+        chatGroup=Core.get().bot(platId).orElseThrow().getGroup(groupId).orElseThrow();
+    }
+
+    @Override
     public String toString() {
         if(chatGroup==null)return "Invalidated Group";
         return "Group "+chatGroup.getName()+" ("+chatGroup.getID()+")";
