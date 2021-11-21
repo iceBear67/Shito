@@ -99,4 +99,9 @@ public class FileTemplateManager implements ITemplateManager {
     public void saveAllTemplate() {
         cachedTemplates.values().forEach(this::saveTemplate);
     }
+
+    @Override
+    public Collection<? extends ShitoTemplate> getTemplates() {
+        return cachedTemplates.values();
+    }
 }

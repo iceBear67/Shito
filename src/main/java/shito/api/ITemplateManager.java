@@ -3,6 +3,7 @@ package shito.api;
 import cc.sfclub.user.User;
 import shito.api.data.ShitoTemplate;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface ITemplateManager {
@@ -14,4 +15,5 @@ public interface ITemplateManager {
     }
     void saveTemplate(ShitoTemplate template);
     void saveAllTemplate();
+    Collection<? extends ShitoTemplate> getTemplates();
 }

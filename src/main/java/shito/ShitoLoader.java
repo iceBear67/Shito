@@ -102,6 +102,11 @@ public class ShitoLoader extends Plugin {
                                                         .executes(handler::handleRemove)
                                         )
                         )
+                        .then(
+                                Node.literal("all")
+                                        .requires( user -> user.getSender().hasPermission("shito.listall"))
+                                        .executes(handler::handleListTemplates)
+                        )
         );
 
     }

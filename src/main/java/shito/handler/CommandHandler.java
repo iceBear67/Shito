@@ -1,6 +1,7 @@
 package shito.handler;
 
 import cc.sfclub.command.Source;
+import cc.sfclub.core.Core;
 import cc.sfclub.events.message.direct.PrivateMessage;
 import cc.sfclub.events.message.group.GroupMessage;
 import cc.sfclub.transform.Contact;
@@ -16,6 +17,7 @@ import shito.routing.PrivateShitoRouting;
 import shito.session.SessionCreate;
 import shito.session.SessionEdit;
 
+import java.awt.*;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -244,6 +246,21 @@ public class CommandHandler {
 
     public int handleHelp(CommandContext<Source> context) {
         context.getSource().reply(HELP_MSG);
+        return 0;
+    }
+
+    public int handleListTemplates(CommandContext<Source> source) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("All templates:\n");
+        for (ShitoTemplate template : shito.getTemplateManager().getTemplates()) {
+            try {
+                Contact contact = Core.get().userManager().byUUID(template.getUser().toString()).asContact();
+                sb.append(" - ").append(template.getId()).append(" ( by ").append(contact.getNickname()).append(" / ").append(contact.getID()).append(")\n");
+            }catch(Throwable t){
+                sb.append(" - ").append(template.getId()+" ( unknown contact )\n");
+            }
+        }
+        source.getSource().reply(sb.toString());
         return 0;
     }
 }
