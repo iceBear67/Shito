@@ -46,6 +46,7 @@ public class PushHandler{
     }
 
     private int handle(String templateId, String data,String token){
+        //System.out.println(data);
         var template = manager.getTemplate(templateId);
         if(template == null){
             return 404;
@@ -55,7 +56,7 @@ public class PushHandler{
             return 403;
         }
         // try parse.
-        Map<String,Object> context = null;
+        Map<String,Object> context;
         try{
           context = new JsonPathMap(JsonPath.parse(data));
         }catch(Throwable excepted){

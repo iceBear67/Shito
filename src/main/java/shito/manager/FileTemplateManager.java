@@ -30,6 +30,7 @@ public class FileTemplateManager implements ITemplateManager {
     @SuppressWarnings("unchecked")
     public FileTemplateManager(Path dataDir) {
         this.dataDir = dataDir;
+        //todo refactor this shit
         var data = dataDir.resolve("index.json").toFile();
         if(!data.exists()){
             data.createNewFile();
@@ -82,7 +83,9 @@ public class FileTemplateManager implements ITemplateManager {
     }
 
     @Override
+    @SneakyThrows
     public void saveAllTemplate() {
         cachedTemplates.values().forEach(this::saveTemplate);
+        Files.writeString(dataDir.resolve("index.json"),GSON.toJson(index));
     }
 }
