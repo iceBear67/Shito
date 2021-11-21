@@ -7,11 +7,8 @@ import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Setter;
-import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.io.StringWriter;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +41,7 @@ public class ShitoTemplate {
     }
     public String render(Map<String,Object> data){
         try (StringWriter wr = new StringWriter()) {
-            PebbleTemplate compiledTemplate = TEMPLATE_ENGINE.getLiteralTemplate(context); //todo cache
+            PebbleTemplate compiledTemplate = TEMPLATE_ENGINE.getLiteralTemplate(context);
             compiledTemplate.evaluate(wr, data);
             return wr.toString();
         }catch(ParserException excepted){
