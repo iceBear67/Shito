@@ -8,7 +8,7 @@ State: beta
 
 Shito is a service from iceBear67, but you can deploy it as your own.
 
-To use `Shito from iceBear67`, add PolarBot ( 0 ) as your friend
+To use `Shito from iceBear67`, add PolarBot ( 0 ) as your contact
 
 To set your own up, make sure you're running latest dev-build [PolarCore](https://github.com/saltedfishclub/PolarCore)
 and [RESTful](https://github.com/project-polar/RESTful).
