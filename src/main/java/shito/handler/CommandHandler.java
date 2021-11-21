@@ -9,17 +9,14 @@ import com.mojang.brigadier.context.CommandContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import shito.Shito;
-import shito.ShitoLoader;
 import shito.api.data.ShitoPreset;
 import shito.api.data.ShitoRoute;
 import shito.api.data.ShitoTemplate;
 import shito.routing.GroupShitoRouting;
 import shito.routing.PrivateShitoRouting;
-import shito.session.SessionAskDescription;
 import shito.session.SessionCreate;
 import shito.session.SessionEdit;
 
-import java.awt.*;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -85,7 +82,7 @@ public class CommandHandler {
             ShitoTemplate template = new ShitoTemplate(tid, UUID.fromString(src.getSender().uniqueID), templateContext, true, token);
             contact.sendMessage("Saved! Your token is [" + token + "], it won't show again!");
             contact.sendMessage("POST: https://bot.sfclub.cc/shito/api/v1/push/" + tid + "/" + token);
-            contact.sendMessage("GET/OTHERS: https://bot.sfclub.cc/shito/api/v1/push/" + tid + "/" + token + "/:data(urlsafe_base64 encoded)");
+            contact.sendMessage("GET/OTHERS: https://bot.sfclub.cc/shito/api/v1/pushGet/" + tid + "/" + token + "/:data(urlsafe_base64 encoded)");
             shito.getTemplateManager().saveTemplate(template);
         }));
         src.reply("Check your private message. Remember adding polar as your contact before if you haven't");
@@ -341,7 +338,7 @@ public class CommandHandler {
         var contact = src.getSender().asContact();
         contact.sendMessage("Saved! Your token is [" + token + "], it won't show again!");
         contact.sendMessage("POST: https://bot.sfclub.cc/shito/api/v1/push/" + templateId + "/" + token);
-        contact.sendMessage("GET/OTHERS: https://bot.sfclub.cc/shito/api/v1/push/" + templateId + "/" + token + "/:data(urlsafe_base64 encoded)");
+        contact.sendMessage("GET/OTHERS: https://bot.sfclub.cc/shito/api/v1/pushGet/" + templateId + "/" + token + "/:data(urlsafe_base64 encoded)");
         return 0;
     }
 
