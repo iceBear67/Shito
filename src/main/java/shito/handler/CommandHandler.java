@@ -165,7 +165,7 @@ public class CommandHandler {
         }
 
         int ordinary = source.getArgument("id", int.class);
-        if (ordinary > template.getMessageRouting().size()) {
+        if (ordinary > template.getMessageRouting().size()-1) {
             src.reply(tid + ": Illegal ordinary out of size.");
             return 0;
         }
