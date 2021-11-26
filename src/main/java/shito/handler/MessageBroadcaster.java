@@ -5,16 +5,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import shito.api.data.ShitoMessage;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MessageBroadcaster {
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onPushEvent(ShitoMessage message) {
+        var msg = message.render(Collections.emptyMap());
         message.getTemplate().getMessageRouting().forEach(e -> {
-          //  var addition = new HashMap<String,Object>();
-            //addition.put()
-            e.broadcast(recvr -> recvr.sendMessage(message.render(Collections.emptyMap())));
+            e.broadcast(recvr -> recvr.sendMessage(msg));
         });
     }
 }
