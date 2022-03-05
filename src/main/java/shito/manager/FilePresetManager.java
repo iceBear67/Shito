@@ -1,23 +1,17 @@
 package shito.manager;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.SneakyThrows;
 import shito.api.IPresetManager;
 import shito.api.data.ShitoPreset;
-import shito.api.data.ShitoRoute;
-import shito.api.data.ShitoTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toSet;
 
 public class FilePresetManager implements IPresetManager {
     private static final Gson GSON = new Gson();
@@ -31,10 +25,11 @@ public class FilePresetManager implements IPresetManager {
         // generate index.
         //log.info("Preloading");
         try ( var s = Files.walk(dataDir,2)){
-                    s.map(Path::getFileName)
+            s.map(Path::getFileName)
                     .map(Path::toString)
                     .filter(e -> e.startsWith("preset.") && e.endsWith(".json"))
-                    .map(e -> getPresetById(e.replaceFirst("preset\\.", "").replaceFirst("\\.json", "")));
+                    .map(e -> getPresetById(e.replaceFirst("preset\\.", "").replaceFirst("\\.json", "")))
+                    .forEach(Objects::requireNonNull);
         }
     }
     @Override
