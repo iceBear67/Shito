@@ -36,7 +36,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.route") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -98,7 +98,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!src.getSender().hasPermission("shito.bypass.status") || !template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.status") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -132,7 +132,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!src.getSender().hasPermission("shito.bypass.edit") ||!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.edit") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -163,7 +163,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!src.getSender().hasPermission("shito.bypass.delroute") ||!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.delroute") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -187,7 +187,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!src.getSender().hasPermission("shito.bypass.enable") ||!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.enable") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -205,7 +205,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!src.getSender().hasPermission("shito.bypass.disable") ||!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.disable") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
@@ -222,7 +222,7 @@ public class CommandHandler {
         Source src = source.getSource();
         ShitoTemplate template = shito.getTemplateManager().getTemplate(tid);
         // check permissions
-        if (!src.getSender().hasPermission("shito.bypass.remove") ||!template.isAuthorized(src.getSender())) {
+        if (!src.getSender().hasPermission("shito.bypass.remove") && !template.isAuthorized(src.getSender())) {
             src.reply(tid + ": Not authorized.");
             return 0;
         }
